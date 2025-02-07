@@ -1,3 +1,4 @@
+import ExpandableCardDemo from "@/components/expandable-card-demo-grid";
 import sanityClient from "@/lib/sanity";
 
 async function fetchEvents() {
@@ -12,6 +13,7 @@ export default async function Page() {
   return (
     <div>
       <h1>Events in Tegucigalpa</h1>
+      <ExpandableCardDemo />
       <ul>
         {events.map((event: any) => (
           <li key={event._id}>
