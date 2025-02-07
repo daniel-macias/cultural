@@ -27,7 +27,6 @@ async function fetchEvents() {
 export default function ExpandableCardDemo() {
   const [events, setEvents] = useState<any[]>([]);
   const [active, setActive] = useState<any | null>(null);
-  const id = useId();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,66 +43,98 @@ export default function ExpandableCardDemo() {
         setActive(null);
       }
     }
+    if (active) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
+  }, [active]);
 
   useOutsideClick(ref, () => setActive(null));
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
       <div className="max-w-4xl mx-auto p-4">
-        <h1 className="text-3xl font-bold text-center mb-6 text-slate-900">Events in Tegucigalpa</h1>
-        <div className="grid gap-6">
+        <h1 className="text-3xl font-bold text-center mb-6 text-slate-900">
+          Events
+        </h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {events.map((event) => (
-            <div key={event._id} className="relative">
-              <div
-                className="cursor-pointer bg-white p-6 rounded-lg shadow-md"
-                onClick={() => setActive(event)}
-              >
-                {event.promoImage?.asset?.url && (
-                  <div className="w-full h-48 relative">
-                    <Image
-                      src={event.promoImage.asset.url}
-                      alt={event.name}
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-lg"
-                    />
-                  </div>
-                )}
-                <h2 className="text-xl font-semibold mt-4">{event.name}</h2>
-                <p className="text-gray-600">{event.category?.join(", ")}</p>
-              </div>
-
-              {active?._id === event._id && (
-                <AnimatePresence>
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-0 left-0 w-full h-full bg-white p-6 rounded-lg shadow-lg z-10"
-                    ref={ref}
-                  >
-                    <h2 className="text-xl font-semibold">{active.name}</h2>
-                    <p className="text-gray-600">{active.description}</p>
-                    <p className="mt-2 text-sm text-gray-500">
-                      {active.dates?.map((date: any) => (
-                        <span key={date.start}>
-                          {new Date(date.start).toLocaleString()} -{" "}
-                          {new Date(date.end).toLocaleString()}
-                        </span>
-                      ))}
-                    </p>
-                    
-                  </motion.div>
-                </AnimatePresence>
+            <div
+              key={event._id}
+              className="bg-white p-4 rounded-lg shadow-md cursor-pointer"
+              onClick={() => setActive(event)}
+            >
+              {event.promoImage?.asset?.url && (
+                <div className="w-full h-48 relative">
+                  <Image
+                    src={event.promoImage.asset.url}
+                    alt={event.name}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-lg"
+                  />
+                </div>
               )}
+              <h2 className="text-lg font-semibold mt-4">{event.name}</h2>
+              <p className="text-sm text-gray-600">{event.description}</p>
+              <p className="text-sm font-medium text-green-600 mt-2">
+                {event.priceRange
+                  ? `$${event.priceRange.minPrice} - $${event.priceRange.maxPrice}`
+                  : "Free"}
+              </p>
             </div>
           ))}
         </div>
       </div>
+
+      {/* Modal */}
+      <AnimatePresence>
+        {active && (
+          <motion.div
+            className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              ref={ref}
+              className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
+            >
+              <button
+                className="absolute top-3 right-3 text-gray-600 hover:text-gray-900"
+                onClick={() => setActive(null)}
+              >
+                ✕
+              </button>
+              {active.promoImage?.asset?.url && (
+                <div className="w-full h-48 relative">
+                  <Image
+                    src={active.promoImage.asset.url}
+                    alt={active.name}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-lg"
+                  />
+                </div>
+              )}
+              <h2 className="text-xl font-bold mt-4">{active.name}</h2>
+              <p className="text-gray-700 mt-2">{active.description}</p>
+              <p className="text-sm font-medium text-green-600 mt-2">
+                {active.priceRange
+                  ? `$${active.priceRange.minPrice} - $${active.priceRange.maxPrice}`
+                  : "Free"}
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
