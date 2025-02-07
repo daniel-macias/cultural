@@ -22,9 +22,28 @@ export default defineType({
       type: 'text',
     }),
     defineField({
-      name: 'dateTime',
-      title: 'Date & Time',
-      type: 'datetime',
+      name: 'dates',
+      title: 'Event Dates',
+      type: 'array',
+      of: [{ type: 'object', fields: [
+        defineField({ name: 'start', title: 'Start Time', type: 'datetime' }),
+        defineField({ name: 'end', title: 'End Time', type: 'datetime' }),
+      ]}]
+    }),
+    defineField({
+      name: 'promoImage',
+      title: 'Promotional Image',
+      type: 'image',
+      options: { hotspot: true }, // Enables image cropping
+    }),
+    defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: {
+        layout: 'tags',
+      },
     }),
   ],
 });
