@@ -49,6 +49,25 @@ export default defineType({
         name: 'trending',
         title: 'Trending',
         type: 'boolean',
+    }),
+    defineField({
+        name: 'priceRange',
+        title: 'Price Range',
+        type: 'object',
+        fields: [
+          defineField({
+            name: 'minPrice',
+            title: 'Minimum Price',
+            type: 'number',
+            validation: Rule => Rule.required().min(0).error('Minimum price must be a positive number'),
+          }),
+          defineField({
+            name: 'maxPrice',
+            title: 'Maximum Price',
+            type: 'number',
+            validation: Rule => Rule.required().min(0).error('Maximum price must be a positive number'),
+          }),
+        ],
       }),
   ],
 });
