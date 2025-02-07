@@ -45,5 +45,10 @@ export default defineType({
         layout: 'tags',
       },
     }),
+    defineField({
+        name: 'trending',
+        title: 'Trending',
+        type: 'boolean',
+      }),
   ],
 });
