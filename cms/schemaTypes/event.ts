@@ -37,14 +37,34 @@ export default defineType({
       options: { hotspot: true }, // Enables image cropping
     }),
     defineField({
-      name: 'category',
-      title: 'Category',
-      type: 'array',
-      of: [{ type: 'string' }],
-      options: {
-        layout: 'tags',
-      },
-    }),
+        name: 'categories',
+        title: 'Categorías',
+        type: 'array',
+        of: [{ type: 'string' }],
+        options: {
+          list: [
+            { title: 'Música', value: 'musica' }, 
+            { title: 'Teatro', value: 'teatro' },
+            { title: 'Tecnología', value: 'tecnologia' },
+            { title: 'Deporte', value: 'deporte' },
+            { title: 'Infantil', value: 'infantil' },
+            { title: 'Moda', value: 'moda' },
+            { title: 'Arte', value: 'arte' },
+            { title: 'Feria', value: 'feria' },
+            { title: 'Concierto', value: 'concierto' },
+            { title: 'Gastronómico', value: 'gastronomico' },
+            { title: 'Político', value: 'politico' },
+            { title: 'Remoto', value: 'remoto' },
+            { title: 'Educativo', value: 'educativo' },
+            { title: 'Religioso', value: 'religioso' },
+            { title: 'Recaudación', value: 'recaudacion' },
+            { title: 'Ambiental', value: 'ambiental' },
+            { title: 'Cine y Televición', value: 'cine' },
+            { title: 'Networking', value: 'networking' },
+            { title: 'Videojuegos', value: 'videojuegos' },
+          ],
+        },
+      }),
     defineField({
         name: 'trending',
         title: 'Trending',
@@ -69,5 +89,12 @@ export default defineType({
           }),
         ],
       }),
+      defineField({
+        name: 'location',
+        title: 'Location',
+        type: 'reference',
+        to: [{ type: 'location' }], // Reference to the "location" document
+      }),
+
   ],
 });
