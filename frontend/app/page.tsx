@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useId, useRef, useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import sanityClient from "@/lib/sanity";
@@ -196,6 +197,10 @@ export default function ExpandableCardDemo() {
                   <p>{`$${active.priceRange.minPrice} - $${active.priceRange.maxPrice}`}</p>
                 </div>
               )}
+
+            <Link href={`/events/${active._id}`} className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 inline-block">
+              Ver Más
+            </Link>
             </motion.div>
           </motion.div>
         )}

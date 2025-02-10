@@ -48,18 +48,21 @@ const EventCard: React.FC<EventCardProps> = ({ event, setActive }) => {
   return (
     <div
       key={event._id}
-      className="bg-white p-4 rounded-lg shadow-md cursor-pointer relative"
+      className="relative group bg-white p-4 rounded-lg shadow-md cursor-pointer"
       onClick={() => setActive(event)}
     >
 
     {/* Trending Square */}
       {event.trending && (
-        <div className="absolute transform -translate-x-1/4 -translate-y-1/4 bg-red-500 text-white w-10 h-10 flex items-center justify-center rounded-lg z-10">
+        <div className="transform -translate-x-1/4 -translate-y-1/4 bg-red-500 text-white w-10 h-10 flex items-center justify-center rounded-lg z-10">
             <ArrowTrendingUpIcon className="h-6 w-6 text-white" />
+            <span className="absolute left-8 opacity-0 group-hover:opacity-100 transition-opacity bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-lg rounded-l-none">
+                En tendencia
+            </span>
         </div>
       )}
         {/* Date square */}
-        <div className="absolute top-4 right-4 bg-blue-600 text-white p-4 rounded-lg flex flex-col justify-center items-center z-10">
+        <div className="opacity-90 absolute top-4 right-4 bg-blue-600 text-white p-4 rounded-lg rounded-t-none flex flex-col justify-center items-center z-10">
             <span className="text-md">{weekday}</span>
             <span className="text-xl font-bold">{day}</span>
             <span className="text-md font-bold">{month}</span>
