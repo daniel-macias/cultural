@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import sanityClient from "@/lib/sanity";
 import EventCard from "@/components/EventCard";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 
 // Fetch event data from Sanity
 async function fetchEvents() {
@@ -86,11 +87,27 @@ export default function ExpandableCardDemo() {
 
   useOutsideClick(ref, () => setActive(null));
 
+  const formatDates = (dates: any[]) => {
+    return dates.map((date: any, index: number) => {
+      const start = new Date(date.start);
+      const end = new Date(date.end);
+      const startTime = start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const endTime = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const dateStr = start.toLocaleDateString("es-ES", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+      return (
+        <div key={index} className="mb-2">
+          <div className="text-lg font-semibold">{dateStr}</div>
+          <div className="text-sm text-gray-600">{`${startTime} - ${endTime}`}</div>
+        </div>
+      );
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 py-10">
       <div className="max-w-4xl mx-auto p-4">
         <h1 className="text-3xl font-bold text-center mb-6 text-slate-900">
-          Events
+          Eventos en Tegucigalpa
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {events.map((event) => (
@@ -115,14 +132,19 @@ export default function ExpandableCardDemo() {
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
             >
-              <button
-                className="absolute top-3 right-3 text-gray-600 hover:text-gray-900"
-                onClick={() => setActive(null)}
-              >
-                ✕
-              </button>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold">{active.name}</h2>
+                <button
+                  onClick={() => setActive(null)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  <XMarkIcon className="w-6 h-6" />
+                </button>
+              </div>
+              
+
               {active.promoImage?.asset?.url && (
-                <div className="w-full h-48 relative">
+                <div className="w-full h-48 relative mb-4">
                   <Image
                     src={active.promoImage.asset.url}
                     alt={active.name}
@@ -132,13 +154,48 @@ export default function ExpandableCardDemo() {
                   />
                 </div>
               )}
-              <h2 className="text-xl font-bold mt-4">{active.name}</h2>
-              <p className="text-gray-700 mt-2">{active.description}</p>
-              <p className="text-sm font-medium text-green-600 mt-2">
-                {active.priceRange
-                  ? `$${active.priceRange.minPrice} - $${active.priceRange.maxPrice}`
-                  : "Free"}
-              </p>
+
+              <div className="mb-4">
+                <p className="text-lg">{active.description}</p>
+              </div>
+
+              {/* Display event dates */}
+              <div className="mb-4">
+                <h3 className="text-xl font-semibold">Dates</h3>
+                {formatDates(active.dates)}
+              </div>
+
+              {/* Location */}
+              {active.location && (
+                <div className="mb-4">
+                  <h3 className="text-xl font-semibold">Location</h3>
+                  <p>{active.location.name}</p>
+                  <p className="text-sm text-gray-600">{active.location.address}</p>
+                </div>
+              )}
+
+              {/* Categories */}
+              <div className="mb-4">
+                <h3 className="text-xl font-semibold">Categories</h3>
+                <div className="flex gap-2">
+                  {active.categories?.map((category: string) => (
+                    <span
+                      key={category}
+                      className={`px-3 py-1 rounded-full ${categoryMap[category]?.color || "bg-gray-300 text-black"}`}
+                    >
+                      {categoryMap[category]?.label || category}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Price Range */}
+              {active.priceRange && (
+                <div className="mb-4">
+                  <h3 className="text-xl font-semibold">Price Range</h3>
+                  <p>{`$${active.priceRange.minPrice} - $${active.priceRange.maxPrice}`}</p>
+                </div>
+              )}
             </motion.div>
           </motion.div>
         )}
