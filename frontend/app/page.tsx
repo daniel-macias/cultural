@@ -44,6 +44,11 @@ const categoryMap: Record<string, { label: string; color: string }> = {
   remoto: { label: "Remoto", color: "bg-cyan-500 text-white" },
   educativo: { label: "Educativo", color: "bg-lime-500 text-black" },
   religioso: { label: "Religioso", color: "bg-rose-500 text-white" },
+  recaudacion: { label: "Recaudación", color: "bg-teal-600 text-white" },
+  ambiental: { label: "Ambiental", color: "bg-green-700 text-white" },
+  cine: { label: "Cine y Televisión", color: "bg-blue-700 text-white" },
+  networking: { label: "Networking", color: "bg-gray-600 text-white" },
+  videojuegos: { label: "Videojuegos", color: "bg-indigo-700 text-white" },
 };
 
 
@@ -56,6 +61,7 @@ export default function ExpandableCardDemo() {
     async function loadEvents() {
       const fetchedEvents = await fetchEvents();
       setEvents(fetchedEvents);
+      
     }
     loadEvents();
   }, []);
@@ -64,6 +70,7 @@ export default function ExpandableCardDemo() {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setActive(null);
+        console.log(events)
       }
     }
     if (active) {
@@ -114,10 +121,28 @@ export default function ExpandableCardDemo() {
                   ? `$${event.priceRange.minPrice} - $${event.priceRange.maxPrice}`
                   : "Free"}
               </p>
-              {event.categories?.map((category: string) => {
-               <p>s</p>
+              <h2 className="text-lg font-bold">{event.name}</h2>
+              <div key={event._id} className="p-4 border rounded-lg shadow-md">
+                
 
-              })}
+                {/* Check if categories exist before mapping */}
+                {event.categories?.length > 0 ? (
+                  <div className="flex gap-2 mt-2">
+                    {event.categories.map((category: string) => {
+                      const categoryInfo = categoryMap[category] || { label: category, color: "bg-gray-500 text-white" };
+
+                      return (
+                        <span key={category} className={`px-2 py-1 rounded-lg text-sm font-semibold ${categoryInfo.color}`}>
+                          {categoryInfo.label}
+                        </span>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-sm">Sin categorías</p>
+                )}
+              </div>
+              
 
             </div>
           ))}
