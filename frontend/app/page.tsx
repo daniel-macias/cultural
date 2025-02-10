@@ -4,6 +4,7 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import sanityClient from "@/lib/sanity";
+import EventCard from "@/components/EventCard";
 
 // Fetch event data from Sanity
 async function fetchEvents() {
@@ -93,58 +94,7 @@ export default function ExpandableCardDemo() {
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {events.map((event) => (
-            <div
-              key={event._id}
-              className="bg-white p-4 rounded-lg shadow-md cursor-pointer"
-              onClick={() => setActive(event)}
-            >
-              {event.trending && (
-                <p className="top-2 right-2 mb-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-lg">
-                  Trending!
-                </p>
-              )}
-              {event.promoImage?.asset?.url && (
-                <div className="w-full h-48 relative">
-                  <Image
-                    src={event.promoImage.asset.url}
-                    alt={event.name}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-lg"
-                  />
-                </div>
-              )}
-              <h2 className="text-lg font-semibold mt-4">{event.name}</h2>
-              <p className="text-sm text-gray-600">{event.description}</p>
-              <p className="text-sm font-medium text-green-600 mt-2">
-                {event.priceRange
-                  ? `$${event.priceRange.minPrice} - $${event.priceRange.maxPrice}`
-                  : "Free"}
-              </p>
-              <h2 className="text-lg font-bold">{event.name}</h2>
-              <div key={event._id} className="p-4 border rounded-lg shadow-md">
-                
-
-                {/* Check if categories exist before mapping */}
-                {event.categories?.length > 0 ? (
-                  <div className="flex gap-2 mt-2">
-                    {event.categories.map((category: string) => {
-                      const categoryInfo = categoryMap[category] || { label: category, color: "bg-gray-500 text-white" };
-
-                      return (
-                        <span key={category} className={`px-2 py-1 rounded-lg text-sm font-semibold ${categoryInfo.color}`}>
-                          {categoryInfo.label}
-                        </span>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <p className="text-gray-500 text-sm">Sin categorías</p>
-                )}
-              </div>
-              
-
-            </div>
+            <EventCard key={event._id} event={event} setActive={setActive} />
           ))}
         </div>
       </div>
