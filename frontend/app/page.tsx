@@ -15,14 +15,37 @@ async function fetchEvents() {
     promoImage{
       asset->{url}
     },
-    category,
+    categories,
     priceRange {
       minPrice,
       maxPrice
-    }
+    },
+    location->{
+      name,
+      address
+    },
+    trending
   }`;
   return await sanityClient.fetch(query);
 }
+
+const categoryMap: Record<string, { label: string; color: string }> = {
+  musica: { label: "Música", color: "bg-blue-500 text-white" },
+  teatro: { label: "Teatro", color: "bg-purple-500 text-white" },
+  tecnologia: { label: "Tecnología", color: "bg-green-500 text-white" },
+  deporte: { label: "Deporte", color: "bg-red-500 text-white" },
+  infantil: { label: "Infantil", color: "bg-yellow-500 text-black" },
+  moda: { label: "Moda", color: "bg-pink-500 text-white" },
+  arte: { label: "Arte", color: "bg-indigo-500 text-white" },
+  feria: { label: "Feria", color: "bg-orange-500 text-white" },
+  concierto: { label: "Concierto", color: "bg-teal-500 text-white" },
+  gastronomico: { label: "Gastronómico", color: "bg-amber-500 text-black" },
+  politico: { label: "Político", color: "bg-gray-700 text-white" },
+  remoto: { label: "Remoto", color: "bg-cyan-500 text-white" },
+  educativo: { label: "Educativo", color: "bg-lime-500 text-black" },
+  religioso: { label: "Religioso", color: "bg-rose-500 text-white" },
+};
+
 
 export default function ExpandableCardDemo() {
   const [events, setEvents] = useState<any[]>([]);
@@ -68,6 +91,11 @@ export default function ExpandableCardDemo() {
               className="bg-white p-4 rounded-lg shadow-md cursor-pointer"
               onClick={() => setActive(event)}
             >
+              {event.trending && (
+                <p className="top-2 right-2 mb-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-lg">
+                  Trending!
+                </p>
+              )}
               {event.promoImage?.asset?.url && (
                 <div className="w-full h-48 relative">
                   <Image
@@ -86,6 +114,11 @@ export default function ExpandableCardDemo() {
                   ? `$${event.priceRange.minPrice} - $${event.priceRange.maxPrice}`
                   : "Free"}
               </p>
+              {event.categories?.map((category: string) => {
+               <p>s</p>
+
+              })}
+
             </div>
           ))}
         </div>
