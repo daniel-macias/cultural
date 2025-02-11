@@ -1,6 +1,6 @@
+"use client";
 import React from "react";
 import Image from "next/image";
-import { BeakerIcon } from "@heroicons/react/16/solid";
 import { ArrowTrendingUpIcon } from "@heroicons/react/20/solid";
 // Category mapping object
 const categoryMap: Record<string, { label: string; color: string }> = {
