@@ -20,17 +20,18 @@ interface MapProps {
 
 const Map: React.FC<MapProps> = ({ coordinates }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
+  const mapInstance = useRef<L.Map | null>(null);
 
   useEffect(() => {
-    if (mapRef.current) {
-      const map = L.map(mapRef.current).setView([coordinates.lat, coordinates.lng], 13);
+    if (mapRef.current && !mapInstance.current) {
+        mapInstance.current = L.map(mapRef.current).setView([coordinates.lat, coordinates.lng], 13);
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution:
-          'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
-
-      L.marker([coordinates.lat, coordinates.lng], { icon: markerIcon }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(mapInstance.current);
+  
+        L.marker([coordinates.lat, coordinates.lng], { icon: markerIcon }).addTo(mapInstance.current);
     }
   }, [coordinates]);
 
