@@ -6,7 +6,7 @@ export interface EventType {
     promoImage?: { asset: { url: string } };
     categories?: string[];
     priceRange?: { minPrice: number; maxPrice: number };
-    location?: { name: string; address: string };
+    location?: { _id: string; name: string; address: string };
     trending?: boolean;
   }
   

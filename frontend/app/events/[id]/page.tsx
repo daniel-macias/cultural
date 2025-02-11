@@ -2,28 +2,30 @@ import Image from "next/image";
 import sanityClient from "@/lib/sanity";
 import { EventType } from "@/types/event";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 // Fetch event data from Sanity
 async function fetchEvent(id: string): Promise<EventType | null> {
   const query = `*[_type == "event" && _id == $id][0]{
+  _id,
+  name,
+  description,
+  dates,
+  promoImage{
+    asset->{url}
+  },
+  categories,
+  priceRange {
+    minPrice,
+    maxPrice
+  },
+  location->{
     _id,
     name,
-    description,
-    dates,
-    promoImage{
-      asset->{url}
-    },
-    categories,
-    priceRange {
-      minPrice,
-      maxPrice
-    },
-    location->{
-      name,
-      address
-    },
-    trending
-  }`;
+    address
+  },
+  trending
+}`;
 
   return await sanityClient.fetch(query, { id });
 }
@@ -122,13 +124,14 @@ export default async function EventPage({ params }: { params: { id: string } }) 
         )}
       </div>
 
-      {/* Location Section */}
+      {/* Location Button */}
       {event.location && (
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold">Ubicación:</h3>
-          <p>{event.location.name}</p>
-          <p>{event.location.address}</p>
-        </div>
+        <Link
+          href={`/locations/${event.location._id}`}
+          className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 inline-block"
+        >
+          Ver Ubicación
+        </Link>
       )}
     </div>
   );
