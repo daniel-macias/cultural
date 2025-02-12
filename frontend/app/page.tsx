@@ -24,6 +24,7 @@ async function fetchEvents() {
       maxPrice
     },
     location->{
+      _id,
       name,
       address
     },
@@ -168,11 +169,12 @@ export default function ExpandableCardDemo() {
 
               {/* Location */}
               {active.location && (
-                <div className="mb-4">
-                  <h3 className="text-xl font-semibold">Location</h3>
-                  <p>{active.location.name}</p>
-                  <p className="text-sm text-gray-600">{active.location.address}</p>
-                </div>
+                <p>
+                  Location:{" "}
+                  <Link href={`/locations/${active.location._id}`} className="text-blue-600 hover:underline">
+                    {active.location.name}
+                  </Link>
+                </p>
               )}
 
               {/* Categories */}

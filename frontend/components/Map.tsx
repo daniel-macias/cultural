@@ -24,7 +24,7 @@ const Map: React.FC<MapProps> = ({ coordinates }) => {
 
   useEffect(() => {
     if (mapRef.current && !mapInstance.current) {
-        mapInstance.current = L.map(mapRef.current).setView([coordinates.lat, coordinates.lng], 13);
+        mapInstance.current = L.map(mapRef.current).setView([coordinates.lat, coordinates.lng], 16);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution:
