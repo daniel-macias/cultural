@@ -7,6 +7,7 @@ import { useOutsideClick } from "@/hooks/use-outside-click";
 import sanityClient from "@/lib/sanity";
 import EventCard from "@/components/EventCard";
 import { XMarkIcon } from "@heroicons/react/20/solid";
+import ShareButtons from "@/components/ShareButton";
 
 // Fetch event data from Sanity
 async function fetchEvents() {
@@ -203,6 +204,9 @@ export default function ExpandableCardDemo() {
             <Link href={`/events/${active._id}`} className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 inline-block">
               Ver Más
             </Link>
+
+            {/* Share Button */}
+            <ShareButtons url={`${typeof window !== "undefined" ? window.location.origin : ""}/events/${active._id}`} title={""} />
             </motion.div>
           </motion.div>
         )}
