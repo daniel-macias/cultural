@@ -4,6 +4,9 @@ import { EventType } from "@/types/event";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MapPinIcon } from "@heroicons/react/20/solid";
+import AddToCalendar from "@/components/AddToCalendar";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 // Fetch event data from Sanity
 async function fetchEvent(id: string): Promise<EventType | null> {
@@ -46,6 +49,10 @@ const categoryMap: Record<string, { label: string; color: string }> = {
   politico: { label: "Político", color: "bg-gray-700 text-white" },
 };
 
+const formatDateInSpanish = (dateString: string) => {
+  return format(new Date(dateString), "d 'de' MMMM yyyy, HH:mm", { locale: es });
+};
+
 export default async function EventPage({ params }: { params: { id: string } }) {
   // Await the params before using them
   const { id } = await params;
@@ -55,8 +62,10 @@ export default async function EventPage({ params }: { params: { id: string } }) 
 
   if (!event) return notFound();
 
+  const eventDates = event.dates || [];
+
   return (
-    <div className="p-8 max-w-2xl mx-auto space-y-6">
+    <div className="p-8 max-w-2xl mx-auto space-y-6 pt-20">
       {/* Event Image */}
       {event.promoImage?.asset?.url && (
         <Image
@@ -107,7 +116,7 @@ export default async function EventPage({ params }: { params: { id: string } }) 
         <ul className="list-disc pl-5 text-gray-600">
           {event.dates?.map((date, index) => (
             <li key={index}>
-              <strong>{date.start}</strong> to <strong>{date.end}</strong>
+              <strong>{formatDateInSpanish(date.start)}</strong> - <strong>{formatDateInSpanish(date.end)}</strong>
             </li>
           ))}
         </ul>
@@ -137,6 +146,12 @@ export default async function EventPage({ params }: { params: { id: string } }) 
           </Link>
         </div>
       )}
+
+      {/* Add to Calendar Section */}
+      <div className="mt-4">
+        <h3 className="text-lg font-semibold">Añadir al Calendario:</h3>
+        <AddToCalendar dates={eventDates} title={event.name} description={event.description}/>
+      </div>
     </div>
   );
 }

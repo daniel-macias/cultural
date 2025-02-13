@@ -27,7 +27,7 @@ export default async function LocationPage({ params }: { params: { id: string } 
   if (!location) return notFound();
 
   return (
-    <div className="p-8 max-w-2xl mx-auto space-y-6">
+    <div className="p-8 max-w-2xl mx-auto space-y-6  pt-20">
       <h1 className="text-3xl font-bold">{location.name}</h1>
       <p className="text-gray-700">{location.address}</p>
 
