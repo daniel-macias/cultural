@@ -6,8 +6,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import sanityClient from "@/lib/sanity";
 import EventCard from "@/components/EventCard";
-import { XMarkIcon } from "@heroicons/react/20/solid";
+import { XMarkIcon, ArrowRightIcon, MapPinIcon } from "@heroicons/react/20/solid";
 import ShareButtons from "@/components/ShareButton";
+
 
 // Fetch event data from Sanity
 async function fetchEvents() {
@@ -108,11 +109,11 @@ export default function ExpandableCardDemo() {
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
-      <div className="max-w-4xl mx-auto p-4">
+      <div className="max-w-7xl mx-auto p-4">
         <h1 className="text-3xl font-bold text-center mb-6 text-slate-900">
           Eventos en Tegucigalpa
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {events.map((event) => (
             <EventCard key={event._id} event={event} setActive={setActive} />
           ))}
@@ -164,23 +165,26 @@ export default function ExpandableCardDemo() {
 
               {/* Display event dates */}
               <div className="mb-4">
-                <h3 className="text-xl font-semibold">Dates</h3>
+                <h3 className="text-xl font-semibold">Fechas</h3>
                 {formatDates(active.dates)}
               </div>
 
               {/* Location */}
               {active.location && (
-                <p>
-                  Location:{" "}
-                  <Link href={`/locations/${active.location._id}`} className="text-blue-600 hover:underline">
+                <div className="flex items-center space-x-2">
+                  <MapPinIcon className="h-5 w-5 text-gray-600" />
+                  <Link
+                    href={`/locations/${active.location._id}`}
+                    className="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg transition duration-200 hover:bg-blue-600 hover:text-white"
+                  >
                     {active.location.name}
                   </Link>
-                </p>
+                </div>
               )}
 
               {/* Categories */}
-              <div className="mb-4">
-                <h3 className="text-xl font-semibold">Categories</h3>
+              <div className="mb-4 mt-4">
+                <h3 className="text-xl font-semibold">Categorías</h3>
                 <div className="flex gap-2">
                   {active.categories?.map((category: string) => (
                     <span
@@ -196,17 +200,24 @@ export default function ExpandableCardDemo() {
               {/* Price Range */}
               {active.priceRange && (
                 <div className="mb-4">
-                  <h3 className="text-xl font-semibold">Price Range</h3>
+                  <h3 className="text-xl font-semibold">Precios</h3>
                   <p>{`$${active.priceRange.minPrice} - $${active.priceRange.maxPrice}`}</p>
                 </div>
               )}
 
-            <Link href={`/events/${active._id}`} className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 inline-block">
-              Ver Más
-            </Link>
+            <div className="flex justify-between items-center mt-4">
+              {/* Ver Más Button */}
+              <Link
+                href={`/events/${active._id}`}
+                className="px-4 py-2 bg-gray-800 text-white rounded-lg flex items-center space-x-2"
+              >
+                <span>Ver Más</span>
+                <ArrowRightIcon className="h-5 w-5" />
+              </Link>
 
-            {/* Share Button */}
-            <ShareButtons url={`${typeof window !== "undefined" ? window.location.origin : ""}/events/${active._id}`} title={""} />
+              {/* Share Button */}
+              <ShareButtons url={`${process.env.NEXT_PUBLIC_BASE_URL}/events/${active._id}`} title={active.name} />
+            </div>
             </motion.div>
           </motion.div>
         )}

@@ -3,6 +3,7 @@ import sanityClient from "@/lib/sanity";
 import { EventType } from "@/types/event";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { MapPinIcon } from "@heroicons/react/20/solid";
 
 // Fetch event data from Sanity
 async function fetchEvent(id: string): Promise<EventType | null> {
@@ -114,7 +115,7 @@ export default async function EventPage({ params }: { params: { id: string } }) 
 
       {/* Price */}
       <div className="mt-4">
-        <h3 className="text-lg font-semibold">Price:</h3>
+        <h3 className="text-lg font-semibold">Precio:</h3>
         {event.priceRange ? (
           <p>
             ${event.priceRange.minPrice} - ${event.priceRange.maxPrice}
@@ -124,14 +125,17 @@ export default async function EventPage({ params }: { params: { id: string } }) 
         )}
       </div>
 
-      {/* Location Button */}
+      {/* Location */}
       {event.location && (
-        <Link
-          href={`/locations/${event.location._id}`}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 inline-block"
-        >
-          Ver Ubicación
-        </Link>
+        <div className="flex items-center space-x-2">
+          <MapPinIcon className="h-5 w-5 text-gray-500" />
+          <Link
+            href={`/locations/${event.location._id}`}
+            className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+          >
+            {event.location.name}
+          </Link>
+        </div>
       )}
     </div>
   );
