@@ -43,7 +43,7 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, active }) => {
         onClick={onClose}
       >
         <motion.div
-          className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative"
+          className="bg-white rounded-lg shadow-lg max-w-xl w-full p-6 relative"
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
           exit={{ scale: 0.8 }}
@@ -72,7 +72,7 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, active }) => {
             </div>
           )}
 
-          <div className="mb-4">
+          <div className="max-h-60 overflow-y-auto text-gray-700 p-2">
             <p className="text-lg">{active.description}</p>
           </div>
 

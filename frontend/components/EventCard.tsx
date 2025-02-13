@@ -30,6 +30,10 @@ interface EventCardProps {
   setActive: (event: any) => void;
 }
 
+const truncateText = (text: string, length: number) => {
+  if (text.length <= length) return text;
+  return text.slice(0, length) + "... ";
+};
 
 
 const EventCard: React.FC<EventCardProps> = ({ event, setActive }) => {
@@ -83,7 +87,14 @@ const EventCard: React.FC<EventCardProps> = ({ event, setActive }) => {
 
       <h2 className="text-lg font-semibold mt-4">{event.name}</h2>
 
-      <p className="text-sm text-gray-600">{event.description}</p>
+      <p className="text-gray-600">
+        {truncateText(event.description, 150)}
+        {event.description.length > 150 && (
+          <span className="text-blue-500 font-semibold cursor-pointer">
+            Seguir Leyendo
+          </span>
+        )}
+      </p>
       
 
       <p className="text-sm font-medium text-green-600 mt-2">
