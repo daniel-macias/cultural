@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect, useId, useRef, useState } from "react";
-import { useOutsideClick } from "@/hooks/use-outside-click";
+import React, { useEffect, useState } from "react";
 import sanityClient from "@/lib/sanity";
 import EventCard from "@/components/EventCard";
 import EventModal from "@/components/EventModal";
@@ -33,7 +32,6 @@ async function fetchEvents() {
 export default function ExpandableCardDemo() {
   const [events, setEvents] = useState<any[]>([]);
   const [active, setActive] = useState<any | null>(null);
-  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     async function loadEvents() {
@@ -60,8 +58,6 @@ export default function ExpandableCardDemo() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [active]);
-
-  useOutsideClick(ref, () => setActive(null));
 
   return (
     <div className="min-h-screen bg-gray-100 py-20">

@@ -40,12 +40,14 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, active }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        onClick={onClose}
       >
         <motion.div
           className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative"
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
           exit={{ scale: 0.8 }}
+          onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">{active.name}</h2>
