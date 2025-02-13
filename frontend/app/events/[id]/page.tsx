@@ -7,6 +7,7 @@ import { MapPinIcon } from "@heroicons/react/20/solid";
 import AddToCalendar from "@/components/AddToCalendar";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { categoryMap } from "@/utils/categoryMap";
 
 // Fetch event data from Sanity
 async function fetchEvent(id: string): Promise<EventType | null> {
@@ -33,21 +34,6 @@ async function fetchEvent(id: string): Promise<EventType | null> {
 
   return await sanityClient.fetch(query, { id });
 }
-
-// Category styles
-const categoryMap: Record<string, { label: string; color: string }> = {
-  musica: { label: "Música", color: "bg-blue-500 text-white" },
-  teatro: { label: "Teatro", color: "bg-purple-500 text-white" },
-  tecnologia: { label: "Tecnología", color: "bg-green-500 text-white" },
-  deporte: { label: "Deporte", color: "bg-red-500 text-white" },
-  infantil: { label: "Infantil", color: "bg-yellow-500 text-black" },
-  moda: { label: "Moda", color: "bg-pink-500 text-white" },
-  arte: { label: "Arte", color: "bg-indigo-500 text-white" },
-  feria: { label: "Feria", color: "bg-orange-500 text-white" },
-  concierto: { label: "Concierto", color: "bg-teal-500 text-white" },
-  gastronomico: { label: "Gastronómico", color: "bg-amber-500 text-black" },
-  politico: { label: "Político", color: "bg-gray-700 text-white" },
-};
 
 const formatDateInSpanish = (dateString: string) => {
   return format(new Date(dateString), "d 'de' MMMM yyyy, HH:mm", { locale: es });
