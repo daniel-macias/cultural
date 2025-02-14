@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import sanityClient from "@/lib/sanity";
 import EventCard from "@/components/EventCard";
 import EventModal from "@/components/EventModal";
+import TrendingCarousel from "@/components/TrendingCarousel";
 
 // Fetch event data from Sanity
 async function fetchEvents() {
@@ -65,6 +66,7 @@ export default function ExpandableCardDemo() {
         <h1 className="text-3xl font-bold text-center mb-6 text-slate-900">
           Eventos en Tegucigalpa
         </h1>
+        {events.length > 0 && <TrendingCarousel events={events.filter(e => e.trending)} />}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {events.map((event) => (
             <EventCard key={event._id} event={event} setActive={setActive} />
