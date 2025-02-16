@@ -60,19 +60,68 @@ export default function ExpandableCardDemo() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [active]);
 
+  const today = new Date();
+  const next7 = new Date();
+  next7.setDate(today.getDate() + 7);
+
+  const next14 = new Date();
+  next14.setDate(today.getDate() + 14);
+
+  // Filter events
+  const next7DaysEvents = events.filter((event) => {
+    const eventDate = new Date(event.dates[0]?.start);
+    return eventDate >= today && eventDate <= next7;
+  });
+
+  const next14DaysEvents = events.filter((event) => {
+    const eventDate = new Date(event.dates[0]?.start);
+    return eventDate > next7 && eventDate <= next14;
+  });
+
   return (
     <div className="min-h-screen bg-gray-100 py-20">
       <div className="max-w-7xl mx-auto p-4">
         <h1 className="text-3xl font-bold text-center mb-6 text-slate-900">
           Eventos en Tegucigalpa
         </h1>
+       
         {events.length > 0 && <TrendingCarousel events={events.filter(e => e.trending)} />}
+
+          {/* Next 7 Days */}
+         {next7DaysEvents.length > 0 && (
+          <>
+            <h2 className="text-2xl font-semibold mt-10 mb-4">Eventos en los próximos 7 días</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {next7DaysEvents.map((event) => (
+                <EventCard key={event._id} event={event} setActive={setActive} />
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Next 14 Days */}
+        {next14DaysEvents.length > 0 && (
+          <>
+            <h2 className="text-2xl font-semibold mt-10 mb-4">Eventos en los próximos 14 días</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {next14DaysEvents.map((event) => (
+                <EventCard key={event._id} event={event} setActive={setActive} />
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* All Events */}
+        <h2 className="text-2xl font-semibold mt-10 mb-4">Todos los eventos</h2>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {events.map((event) => (
             <EventCard key={event._id} event={event} setActive={setActive} />
           ))}
         </div>
       </div>
+
+      
 
       {/* Modal */}
       <EventModal 
