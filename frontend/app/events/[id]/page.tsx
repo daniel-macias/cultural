@@ -41,7 +41,7 @@ const formatDateInSpanish = (dateString: string) => {
 
 export default async function EventPage({ params }: { params: { id: string } }) {
   // Await the params before using them
-  const { id } = await params;
+  const { id } = params;
 
   // Fetch event data
   const event = await fetchEvent(id);
