@@ -3,7 +3,7 @@
 import Image from "next/image";
 import sanityClient from "@/lib/sanity";
 import { EventType } from "@/types/event";
-import { notFound } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import Link from "next/link";
 import { MapPinIcon } from "@heroicons/react/20/solid";
 import AddToCalendar from "@/components/AddToCalendar";
@@ -42,20 +42,26 @@ const formatDateInSpanish = (dateString: string) => {
   return format(new Date(dateString), "d 'de' MMMM yyyy, HH:mm", { locale: es });
 };
 
-const EventPage: FC<{ params: { id: string } }> = ({ params }) => {
+const EventPage: FC = () => {
+  const { id } = useParams();
   // Await the params before using them
   const [event, setEvent] = useState<EventType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchedEvent = await fetchEvent(params.id);
-      setEvent(fetchedEvent);
+      if (id && typeof id === "string") { // Ensure `id` is a string before using it
+        const fetchedEvent = await fetchEvent(id);
+        setEvent(fetchedEvent);
+      } else {
+        // Handle the case where `id` is undefined or not a string
+        notFound(); // You can show a custom error page or redirect here instead
+      }
       setLoading(false);
     };
 
     fetchData();
-  }, [params.id]);
+  }, [id]);
 
   if (loading) {
     return <div>Cargando...</div>;
