@@ -1,16 +1,15 @@
-"use client"
 
 import Image from "next/image";
 import sanityClient from "@/lib/sanity";
 import { EventType } from "@/types/event";
-import { notFound, useParams } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MapPinIcon } from "@heroicons/react/20/solid";
 import AddToCalendar from "@/components/AddToCalendar";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { categoryMap } from "@/utils/categoryMap";
-import { FC, Key, useEffect, useState } from "react";
+import { Key } from "react";
 
 // Fetch event data from Sanity
 async function fetchEvent(id: string): Promise<EventType | null> {
@@ -42,34 +41,19 @@ const formatDateInSpanish = (dateString: string) => {
   return format(new Date(dateString), "d 'de' MMMM yyyy, HH:mm", { locale: es });
 };
 
-const EventPage: FC = () => {
-  const { id } = useParams();
-  // Await the params before using them
-  const [event, setEvent] = useState<EventType | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+export default async function EventPage({ params }: { params: { id: string | string[] | undefined } }) {
+  // Safely handle params.id
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (id && typeof id === "string") { // Ensure `id` is a string before using it
-        const fetchedEvent = await fetchEvent(id);
-        setEvent(fetchedEvent);
-      } else {
-        // Handle the case where `id` is undefined or not a string
-        notFound(); // You can show a custom error page or redirect here instead
-      }
-      setLoading(false);
-    };
-
-    fetchData();
-  }, [id]);
-
-  if (loading) {
-    return <div>Cargando...</div>;
-  }
-
-  if (!event) {
+  // Check for undefined id
+  if (!id) {
     return notFound();
   }
+
+  // Fetch event data
+  const event = await fetchEvent(id);
+
+  if (!event) return notFound();
 
   const eventDates = event.dates || [];
 
@@ -165,4 +149,3 @@ const EventPage: FC = () => {
   );
 }
 
-export default EventPage;
