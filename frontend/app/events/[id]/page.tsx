@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image";
 import sanityClient from "@/lib/sanity";
 import { EventType } from "@/types/event";
@@ -8,6 +10,7 @@ import AddToCalendar from "@/components/AddToCalendar";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { categoryMap } from "@/utils/categoryMap";
+import { FC, Key, useEffect, useState } from "react";
 
 // Fetch event data from Sanity
 async function fetchEvent(id: string): Promise<EventType | null> {
@@ -39,14 +42,28 @@ const formatDateInSpanish = (dateString: string) => {
   return format(new Date(dateString), "d 'de' MMMM yyyy, HH:mm", { locale: es });
 };
 
-export default async function EventPage({ params }: { params: { id: string } }) {
+const EventPage: FC<{ params: { id: string } }> = ({ params }) => {
   // Await the params before using them
-  const { id } = params;
+  const [event, setEvent] = useState<EventType | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  // Fetch event data
-  const event = await fetchEvent(id);
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedEvent = await fetchEvent(params.id);
+      setEvent(fetchedEvent);
+      setLoading(false);
+    };
 
-  if (!event) return notFound();
+    fetchData();
+  }, [params.id]);
+
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (!event) {
+    return notFound();
+  }
 
   const eventDates = event.dates || [];
 
@@ -80,7 +97,7 @@ export default async function EventPage({ params }: { params: { id: string } }) 
       <div>
         <h3 className="text-lg font-semibold">Categorías:</h3>
         <div className="flex gap-2">
-          {event.categories?.map((category, index) => {
+          {event.categories?.map((category: string | number, index: Key | null | undefined) => {
             const categoryData = categoryMap[category];
             return (
               categoryData && (
@@ -141,3 +158,5 @@ export default async function EventPage({ params }: { params: { id: string } }) 
     </div>
   );
 }
+
+export default EventPage;
