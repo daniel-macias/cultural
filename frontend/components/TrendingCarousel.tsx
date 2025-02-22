@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { categoryMap } from "@/utils/categoryMap";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 // Props interface
 interface EventType {
@@ -72,6 +73,13 @@ export default function TrendingCarousel({ events }: { events: EventType[] }) {
                 </span>
               ))}
             </div>
+
+            <Link
+              href={`/events/${events[index]._id}`}
+              className="mt-4 inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 text-center"
+            >
+              Ver Evento →
+            </Link>
           </div>
         </motion.div>
       </AnimatePresence>
