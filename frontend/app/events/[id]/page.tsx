@@ -41,11 +41,12 @@ const formatDateInSpanish = (dateString: string) => {
   return format(new Date(dateString), "d 'de' MMMM yyyy, HH:mm", { locale: es });
 };
 
-export default async function EventPage({ params }: { params: { id: string | string[] | undefined } }) {
+export default async function EventPage({ params }: { params: { id: string } }) {
   // Ensure id is correctly extracted and treated as a string
-  const id = Array.isArray(params.id) ? params.id[0] : params.id;
+  const id = params.id as string;
 
-  // Handle case when id is undefined or not a valid string
+
+  // If the id is undefined or not a valid string, return notFound
   if (!id || typeof id !== 'string') {
     return notFound();
   }
