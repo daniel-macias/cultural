@@ -41,20 +41,15 @@ const formatDateInSpanish = (dateString: string) => {
   return format(new Date(dateString), "d 'de' MMMM yyyy, HH:mm", { locale: es });
 };
 
-export default async function EventPage({ params }: { params: { id: string } }) {
-  // Ensure id is correctly extracted and treated as a string
-  const id = params.id as string;
+export default async function EventPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  const id = resolvedParams.id;
 
-
-  // If the id is undefined or not a valid string, return notFound
-  if (!id || typeof id !== 'string') {
-    return notFound();
-  }
-
-  // Fetch event data
   const event = await fetchEvent(id);
 
-  if (!event) return notFound();
+  if (!event) {
+    return notFound();
+  }
 
   const eventDates = event.dates || [];
 
