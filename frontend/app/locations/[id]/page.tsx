@@ -21,8 +21,9 @@ async function fetchLocation(id: string): Promise<LocationType | null> {
   return await sanityClient.fetch(query, { id });
 }
 
-export default async function LocationPage({ params }: { params: { id: string } }) {
-  const location = await fetchLocation(params.id);
+export default async function LocationPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params; // Await the params
+  const location = await fetchLocation(resolvedParams.id); // Now safely use the ID
 
   if (!location) return notFound();
 
