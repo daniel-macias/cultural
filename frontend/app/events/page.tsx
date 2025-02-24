@@ -8,7 +8,7 @@ import { categoryMap } from "@/utils/categoryMap";
 import { useDebounce } from "@/utils/useDebounce"; // Custom debounce hook
 
 // Fetch events from Sanity with category & search
-async function fetchEvents(category?: string, searchQuery?: string, showPast? : boolean): Promise<EventType[]> {
+async function fetchEvents(category?: string, searchQuery?: string, showPast? : boolean, page: number = 1, pageSize: number = 10): Promise<EventType[]> {
   let query = `*[_type == "event"`;
   const today = new Date().toISOString();
   // Apply search filter
@@ -48,6 +48,8 @@ async function fetchEvents(category?: string, searchQuery?: string, showPast? : 
     trending
   }`;
 
+  query += ` | order(dates[0].start desc) [${(page - 1) * pageSize}...${page * pageSize}]`;
+
   return await sanityClient.fetch(query);
 }
 
@@ -60,13 +62,27 @@ export default function EventsPage() {
 
   const [showPast, setShowPast] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+
   useEffect(() => {
     async function loadEvents(category: string = "", search: string = "") {
-      const fetchedEvents = await fetchEvents(category, search, showPast);
+      const fetchedEvents = await fetchEvents(category, search, showPast,currentPage, pageSize);
       setEvents(fetchedEvents);
     }
     loadEvents(selectedCategory, debouncedSearch);
-  }, [selectedCategory, debouncedSearch, showPast]);
+  }, [selectedCategory, debouncedSearch, showPast, currentPage]);
+
+  const handlePagination = (direction: string) => {
+    if (direction === "next") {
+      setCurrentPage((prevPage) => prevPage + 1);
+    } else if (direction === "prev" && currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const hasNextPage = events.length === pageSize;
+  const hasPreviousPage = currentPage > 1;
 
   return (
     <div className="min-h-screen bg-gray-100 py-20">
@@ -138,6 +154,29 @@ export default function EventsPage() {
             <EventCard key={event._id} event={event} setActive={setActive} />
           ))}
         </div>
+
+        {/* Pagination */}
+        <div className="flex justify-center space-x-4">
+          <button
+            onClick={() => handlePagination("prev")}
+            disabled={!hasPreviousPage}
+            className={`px-4 py-2 bg-blue-500 text-white rounded-md ${
+              !hasPreviousPage ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            Anterior
+          </button>
+          <button
+            onClick={() => handlePagination("next")}
+            disabled={!hasNextPage}
+            className={`px-4 py-2 bg-blue-500 text-white rounded-md ${
+              !hasNextPage ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            Siguiente
+          </button>
+        </div>
+
       </div>
 
       {/* Modal */}
