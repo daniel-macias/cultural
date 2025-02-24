@@ -8,9 +8,9 @@ import { categoryMap } from "@/utils/categoryMap";
 import { useDebounce } from "@/utils/useDebounce"; // Custom debounce hook
 
 // Fetch events from Sanity with category & search
-async function fetchEvents(category?: string, searchQuery?: string): Promise<EventType[]> {
+async function fetchEvents(category?: string, searchQuery?: string, showPast? : boolean): Promise<EventType[]> {
   let query = `*[_type == "event"`;
-
+  const today = new Date().toISOString();
   // Apply search filter
   if (searchQuery) {
     query += ` && (name match "*${searchQuery}*" || description match "*${searchQuery}*")`;
@@ -19,6 +19,12 @@ async function fetchEvents(category?: string, searchQuery?: string): Promise<Eve
   // Apply category filter
   if (category) {
     query += ` && "${category}" in categories`;
+  }
+
+  if (!showPast) {
+    query += ` && dates[0].start >= "${today}"`;
+  } else {
+    query += ` && dates[0].start < "${today}"`;
   }
 
   query += `]{
@@ -52,13 +58,15 @@ export default function EventsPage() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const debouncedSearch = useDebounce(searchQuery, 300); // Debounce input by 300ms
 
+  const [showPast, setShowPast] = useState(false);
+
   useEffect(() => {
     async function loadEvents(category: string = "", search: string = "") {
-      const fetchedEvents = await fetchEvents(category, search);
+      const fetchedEvents = await fetchEvents(category, search, showPast);
       setEvents(fetchedEvents);
     }
     loadEvents(selectedCategory, debouncedSearch);
-  }, [selectedCategory, debouncedSearch]);
+  }, [selectedCategory, debouncedSearch, showPast]);
 
   return (
     <div className="min-h-screen bg-gray-100 py-20">
@@ -67,8 +75,9 @@ export default function EventsPage() {
           Eventos en Tegucigalpa
         </h1>
 
-        {/* 🔎 Search Input */}
-        <div className="mb-6 flex justify-center">
+        {/* 🔎 Search Input and Show Past Events Toggle */}
+        <div className="flex justify-center items-center gap-6 mb-6">
+          {/* Search Input */}
           <input
             type="text"
             placeholder="Buscar eventos..."
@@ -76,6 +85,25 @@ export default function EventsPage() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full md:w-1/2 px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+
+          {/* Show Past Events Toggle */}
+          <label className="flex items-center space-x-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={showPast}
+              onChange={() => setShowPast((prev) => !prev)}
+              className="hidden"
+              id="showPastEvents"
+            />
+            <div className="relative w-10 h-5 bg-gray-300 rounded-full transition-all duration-300 peer-checked:bg-blue-500">
+              <div
+                className={`absolute top-1 left-1 w-3 h-3 bg-white rounded-full transition-all duration-300 ${
+                  showPast ? "translate-x-5" : ""
+                }`}
+              />
+            </div>
+            <span className="text-gray-700 text-sm select-none">Mostrar eventos anteriores</span>
+          </label>
         </div>
 
         {/* 📌 Category Filter */}

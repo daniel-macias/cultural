@@ -50,7 +50,7 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, active }) => {
           onClick={(e) => e.stopPropagation()}
         >
           {/* Scrollable Content */}
-          <div className="overflow-y-auto max-h-screen">
+          <div className="overflow-y-auto max-h-[calc(100vh-4rem)]">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">{active.name}</h2>
             <button
