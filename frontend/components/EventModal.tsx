@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
-import { XMarkIcon, ArrowRightIcon, MapPinIcon } from "@heroicons/react/20/solid";
+import { FaTimes,FaArrowRight,FaMapPin} from 'react-icons/fa'; // Simple close X
 import ShareButtons from "@/components/ShareButton";
 import { categoryMap } from "@/utils/categoryMap";
 
@@ -57,7 +57,7 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, active }) => {
               onClick={onClose}
               className="text-red-500 hover:text-red-700"
             >
-              <XMarkIcon className="w-6 h-6" />
+              <FaTimes className="w-6 h-6" />
             </button>
           </div>
           
@@ -87,7 +87,7 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, active }) => {
           {/* Location */}
           {active.location && (
             <div className="flex items-center space-x-2">
-              <MapPinIcon className="h-5 w-5 text-gray-600" />
+              <FaMapPin className="h-5 w-5 text-gray-600" />
               <Link
                 href={`/locations/${active.location._id}`}
                 className="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg transition duration-200 hover:bg-blue-600 hover:text-white"
@@ -127,7 +127,7 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, active }) => {
             className="px-4 py-2 bg-gray-800 text-white rounded-lg flex items-center space-x-2"
           >
             <span>Ver Más</span>
-            <ArrowRightIcon className="h-5 w-5" />
+            <FaArrowRight className="h-5 w-5" />
           </Link>
 
           {/* Share Button */}

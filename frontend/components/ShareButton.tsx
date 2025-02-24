@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { ShareIcon } from "@heroicons/react/24/solid";
+import { FaShare } from 'react-icons/fa';
 
 const ShareButtons = ({ url, title }: { url: string; title: string }) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -26,7 +26,7 @@ const ShareButtons = ({ url, title }: { url: string; title: string }) => {
           onClick={handleShare}
           className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
         >
-          <ShareIcon className="h-5 w-5" />
+          <FaShare className="h-5 w-5" />
           <span>Compartir</span>
         </button>
       ) : (
@@ -37,7 +37,7 @@ const ShareButtons = ({ url, title }: { url: string; title: string }) => {
             rel="noopener noreferrer"
             className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
           >
-            <ShareIcon className="h-5 w-5" />
+            <FaShare className="h-5 w-5" />
             <span>Twitter</span>
           </a>
           <a
@@ -46,7 +46,7 @@ const ShareButtons = ({ url, title }: { url: string; title: string }) => {
             rel="noopener noreferrer"
             className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg"
           >
-            <ShareIcon className="h-5 w-5" />
+            <FaShare className="h-5 w-5" />
             <span>Facebook</span>
           </a>
           <a
@@ -55,7 +55,7 @@ const ShareButtons = ({ url, title }: { url: string; title: string }) => {
             rel="noopener noreferrer"
             className="flex items-center space-x-2 px-4 py-2 bg-green-500 text-white rounded-lg"
           >
-            <ShareIcon className="h-5 w-5" />
+            <FaShare className="h-5 w-5" />
             <span>WhatsApp</span>
           </a>
         </>

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
+import { FaBars, FaTimes } from 'react-icons/fa';
 
 const TopNavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +35,7 @@ const TopNavBar = () => {
           className="md:hidden text-gray-700"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {isOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
+          {isOpen ? <FaTimes className="w-6 h-6" /> : <FaBars className="w-6 h-6" />}
         </button>
       </div>
 

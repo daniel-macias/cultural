@@ -4,7 +4,7 @@ import sanityClient from "@/lib/sanity";
 import { EventType } from "@/types/event";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { MapPinIcon } from "@heroicons/react/20/solid";
+import { FaMapMarkerAlt } from 'react-icons/fa';
 import AddToCalendar from "@/components/AddToCalendar";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -54,7 +54,7 @@ export default async function EventPage({ params }: PageProps ) {
   const eventDates = event.dates || [];
 
   return (
-    <div className="p-8 max-w-2xl mx-auto space-y-6 pt-20">
+    <div className="p-8 max-w-2xl mx-auto space-y-6 pt-20 overflow-y-scroll">
       {/* Event Image */}
       {event.promoImage?.asset?.url && (
         <Image
@@ -126,7 +126,7 @@ export default async function EventPage({ params }: PageProps ) {
       {/* Location */}
       {event.location && (
         <div className="flex items-center space-x-2">
-          <MapPinIcon className="h-5 w-5 text-gray-500" />
+          <FaMapMarkerAlt className="h-5 w-5 text-gray-500" />
           <Link
             href={`/locations/${event.location._id}`}
             className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"

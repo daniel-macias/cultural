@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { categoryMap } from "@/utils/categoryMap";
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
+import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
 
 // Props interface
@@ -85,10 +85,10 @@ export default function TrendingCarousel({ events }: { events: EventType[] }) {
       </AnimatePresence>
 
       <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 text-white p-2 bg-black/50 rounded-full">
-        <ArrowLeftIcon className="w-6 h-6" />
+        <FaArrowLeft className="w-6 h-6" />
       </button>
       <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 text-white p-2 bg-black/50 rounded-full">
-        <ArrowRightIcon className="w-6 h-6" />
+        <FaArrowRight className="w-6 h-6" />
       </button>
     </div>
   );

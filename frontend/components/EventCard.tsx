@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { ArrowTrendingUpIcon} from "@heroicons/react/20/solid";
+import { FaArrowAltCircleUp } from 'react-icons/fa'; // Upward arrow inside a circle
 
 import { categoryMap } from "@/utils/categoryMap";
 
@@ -39,7 +39,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, setActive }) => {
     {/* Trending Square */}
       {event.trending && (
         <div className="transform -translate-x-1/4 -translate-y-1/4 bg-red-500 text-white w-10 h-10 flex items-center justify-center rounded-lg z-10">
-            <ArrowTrendingUpIcon className="h-6 w-6 text-white" />
+            <FaArrowAltCircleUp className="h-6 w-6 text-white" />
             <span className="absolute left-8 opacity-0 group-hover:opacity-100 transition-opacity bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-lg rounded-l-none">
                 En tendencia
             </span>
