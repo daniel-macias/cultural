@@ -49,6 +49,8 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, active }) => {
           exit={{ scale: 0.8 }}
           onClick={(e) => e.stopPropagation()}
         >
+          {/* Scrollable Content */}
+          <div className="overflow-y-auto max-h-screen">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">{active.name}</h2>
             <button
@@ -130,6 +132,7 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, active }) => {
 
           {/* Share Button */}
           <ShareButtons url={`${process.env.NEXT_PUBLIC_BASE_URL}/events/${active._id}`} title={active.name} />
+        </div>
         </div>
         </motion.div>
       </motion.div>
