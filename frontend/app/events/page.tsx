@@ -63,7 +63,7 @@ export default function EventsPage() {
   const [showPast, setShowPast] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
+  const pageSize = 12;
 
   useEffect(() => {
     async function loadEvents(category: string = "", search: string = "") {
@@ -147,6 +147,13 @@ export default function EventsPage() {
             ))}
           </div>
         </div>
+
+        {/* Displaying No Results Found */}
+        {events.length === 0 && (
+          <div className="text-center text-gray-500 text-lg">
+            <p>No se encontraron resultados</p>
+          </div>
+        )}
 
         {/* Event Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

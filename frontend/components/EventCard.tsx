@@ -1,29 +1,9 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { ArrowTrendingUpIcon } from "@heroicons/react/20/solid";
-// Category mapping object
-const categoryMap: Record<string, { label: string; color: string }> = {
-  musica: { label: "Música", color: "bg-blue-500 text-white" },
-  teatro: { label: "Teatro", color: "bg-purple-500 text-white" },
-  tecnologia: { label: "Tecnología", color: "bg-green-500 text-white" },
-  deporte: { label: "Deporte", color: "bg-red-500 text-white" },
-  infantil: { label: "Infantil", color: "bg-yellow-500 text-black" },
-  moda: { label: "Moda", color: "bg-pink-500 text-white" },
-  arte: { label: "Arte", color: "bg-indigo-500 text-white" },
-  feria: { label: "Feria", color: "bg-orange-500 text-white" },
-  concierto: { label: "Concierto", color: "bg-teal-500 text-white" },
-  gastronomico: { label: "Gastronómico", color: "bg-amber-500 text-black" },
-  politico: { label: "Político", color: "bg-gray-700 text-white" },
-  remoto: { label: "Remoto", color: "bg-cyan-500 text-white" },
-  educativo: { label: "Educativo", color: "bg-lime-500 text-black" },
-  religioso: { label: "Religioso", color: "bg-rose-500 text-white" },
-  recaudacion: { label: "Recaudación", color: "bg-teal-600 text-white" },
-  ambiental: { label: "Ambiental", color: "bg-green-700 text-white" },
-  cine: { label: "Cine y Televisión", color: "bg-blue-700 text-white" },
-  networking: { label: "Networking", color: "bg-gray-600 text-white" },
-  videojuegos: { label: "Videojuegos", color: "bg-indigo-700 text-white" },
-};
+import { ArrowTrendingUpIcon} from "@heroicons/react/20/solid";
+
+import { categoryMap } from "@/utils/categoryMap";
 
 interface EventCardProps {
   event: any;  //TODO: When finishing up the schema, make this a more specific type
@@ -65,6 +45,18 @@ const EventCard: React.FC<EventCardProps> = ({ event, setActive }) => {
             </span>
         </div>
       )}
+
+      {/* Evento Finalizado Overlay */}
+      {event.dates?.[0]?.start < new Date().toISOString() && (
+      <div className="absolute inset-0 bg-gray-500 bg-opacity-30 flex justify-center items-center z-20 cursor-pointer">
+        <div className="text-white text-xl font-semibold flex items-center">
+          <p className="text-white font-semibold border-2 border-white px-2 py-1 rounded-md bg-black bg-opacity-50 shadow-lg">
+            Evento Finalizado
+          </p>
+        </div>
+      </div>
+      )}
+
         {/* Date square */}
         <div className="opacity-90 absolute top-4 right-4 bg-blue-600 text-white p-4 rounded-lg rounded-t-none flex flex-col justify-center items-center z-10">
             <span className="text-md">{weekday}</span>
