@@ -54,7 +54,7 @@ export default async function EventPage({ params }: PageProps ) {
   const eventDates = event.dates || [];
 
   return (
-    <div className="p-8 max-w-2xl mx-auto space-y-6 pt-20 overflow-y-scroll">
+    <div className="p-8 max-w-2xl mx-auto space-y-6 pt-20 overflow-auto">
       {/* Event Image */}
       {event.promoImage?.asset?.url && (
         <Image
