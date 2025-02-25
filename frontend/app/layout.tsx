@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tegucigalpa Cultural",
-  description: "Tegucigalpa Cultural",
+  title: "Recorriendo el Cerro",
+  description: "Eventos en Tegucigalpa",
 };
 
 export default function RootLayout({

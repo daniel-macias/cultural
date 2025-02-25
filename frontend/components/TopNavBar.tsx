@@ -11,7 +11,7 @@ const TopNavBar = () => {
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold text-blue-600">
-          Eventos Tegucigalpa
+          Recorriendo el Cerro
         </Link>
 
         {/* Desktop Links */}

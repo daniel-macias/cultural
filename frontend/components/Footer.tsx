@@ -5,7 +5,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
         {/* Left Section: Copyright */}
         <div>
-          <p>&copy; {new Date().getFullYear()} Tegucigalpa Cultural</p>
+          <p>&copy; {new Date().getFullYear()} Pobe Poxo</p>
         </div>
 
         {/* Right Section: Social Media Links */}

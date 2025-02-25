@@ -131,7 +131,7 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, active }) => {
           </Link>
 
           {/* Share Button */}
-          <ShareButtons url={`${process.env.NEXT_PUBLIC_BASE_URL}/events/${active._id}`} title={active.name} />
+          <ShareButtons url={`/events/${active._id}`} title={active.name} />
         </div>
         </div>
         </motion.div>

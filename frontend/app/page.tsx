@@ -111,14 +111,6 @@ export default function ExpandableCardDemo() {
           </>
         )}
 
-        {/* All Events */}
-        <h2 className="text-2xl font-semibold mt-10 mb-4">Todos los eventos</h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {events.map((event) => (
-            <EventCard key={event._id} event={event} setActive={setActive} />
-          ))}
-        </div>
       </div>
 
       

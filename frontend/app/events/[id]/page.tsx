@@ -53,8 +53,9 @@ export default async function EventPage({ params }: PageProps ) {
 
   const eventDates = event.dates || [];
 
+  //TODO: The will-change-auto may be causing a hydration error
   return (
-    <div className="p-8 max-w-2xl mx-auto space-y-6 pt-20 overflow-auto">
+    <div className="p-8 max-w-2xl mx-auto space-y-6 pt-20 overflow-hidden will-change-auto">
       {/* Event Image */}
       {event.promoImage?.asset?.url && (
         <Image
