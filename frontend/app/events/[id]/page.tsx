@@ -11,10 +11,17 @@ import { es } from "date-fns/locale";
 import { categoryMap } from "@/utils/categoryMap";
 import { Key } from "react";
 import ShareButtons from "@/components/ShareButton";
-import { Metadata } from "next";
+import { Metadata} from "next";
 
-export async function generateMetadata({ params }: { params: { eventId: string } }): Promise<Metadata> {
-  const event = await fetchEvent(params.eventId);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const event = await fetchEvent((await params).id);
+
+  if (!event) {
+    return {
+      title: "Evento no encontrado",
+      description: "Este evento no está disponible.",
+    };
+  }
 
   if (!event) {
     return {
