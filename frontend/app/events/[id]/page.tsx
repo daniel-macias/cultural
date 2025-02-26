@@ -10,6 +10,40 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { categoryMap } from "@/utils/categoryMap";
 import { Key } from "react";
+import ShareButtons from "@/components/ShareButton";
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: { eventId: string } }): Promise<Metadata> {
+  const event = await fetchEvent(params.eventId);
+
+  if (!event) {
+    return {
+      title: "Evento no encontrado",
+      description: "Este evento no está disponible.",
+    };
+  }
+
+  //TODO: Fix promo image
+  return {
+    title: `${event.name} | Recorriendo el Cerro`,
+    description: event.description?.slice(0, 150) || "Evento en Tegucigalpa.",
+    openGraph: {
+      title: event.name,
+      description: event.description?.slice(0, 150) || "Evento en Tegucigalpa.",
+      url: `https://recorriendoelcerro.com/events/${event._id}`,
+      type: "article",
+      images: [
+        {
+          url: event.promoImage?.asset?.url || "https://recorriendoelcerro.com/default-og.jpg",
+          width: 1200,
+          height: 630,
+          alt: event.name,
+        },
+      ],
+    },
+  };
+}
+
 
 // Fetch event data from Sanity
 async function fetchEvent(id: string): Promise<EventType | null> {
@@ -55,7 +89,7 @@ export default async function EventPage({ params }: PageProps ) {
 
   //TODO: The will-change-auto may be causing a hydration error
   return (
-    <div className="p-8 max-w-2xl mx-auto space-y-6 pt-20 overflow-hidden will-change-auto">
+    <div className="p-8 max-w-2xl mx-auto space-y-6 pt-20 overflow-y-scroll">
       {/* Event Image */}
       {event.promoImage?.asset?.url && (
         <Image
@@ -142,6 +176,9 @@ export default async function EventPage({ params }: PageProps ) {
         <h3 className="text-lg font-semibold">Añadir al Calendario:</h3>
         <AddToCalendar dates={eventDates} title={event.name} description={event.description}/>
       </div>
+
+      {/* Share Button */}
+      <ShareButtons url={`/events/${event._id}`} title={event.name} />
     </div>
   );
 }
