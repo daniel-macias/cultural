@@ -1,8 +1,10 @@
+"use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import sanityClient from "@/lib/sanity";
 import { EventType } from "@/types/event";
-import { notFound } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import Link from "next/link";
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import AddToCalendar from "@/components/AddToCalendar";
@@ -11,87 +13,63 @@ import { es } from "date-fns/locale";
 import { categoryMap } from "@/utils/categoryMap";
 import { Key } from "react";
 import ShareButtons from "@/components/ShareButton";
-import { Metadata} from "next";
-
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const event = await fetchEvent((await params).id);
-
-  if (!event) {
-    return {
-      title: "Evento no encontrado",
-      description: "Este evento no está disponible.",
-    };
-  }
-
-  if (!event) {
-    return {
-      title: "Evento no encontrado",
-      description: "Este evento no está disponible.",
-    };
-  }
-
-  //TODO: Fix promo image
-  return {
-    title: `${event.name} | Recorriendo el Cerro`,
-    description: event.description?.slice(0, 150) || "Evento en Tegucigalpa.",
-    openGraph: {
-      title: event.name,
-      description: event.description?.slice(0, 150) || "Evento en Tegucigalpa.",
-      url: `https://recorriendoelcerro.com/events/${event._id}`,
-      type: "article",
-      images: [
-        {
-          url: event.promoImage?.asset?.url || "https://recorriendoelcerro.com/default-og.jpg",
-          width: 1200,
-          height: 630,
-          alt: event.name,
-        },
-      ],
-    },
-  };
-}
-
-
-// Fetch event data from Sanity
-async function fetchEvent(id: string): Promise<EventType | null> {
-  const query = `*[_type == "event" && _id == $id][0]{
-  _id,
-  name,
-  description,
-  dates,
-  promoImage{
-    asset->{url}
-  },
-  categories,
-  priceRange {
-    minPrice,
-    maxPrice
-  },
-  location->{
-    _id,
-    name,
-    address
-  },
-  trending
-}`;
-
-  return await sanityClient.fetch(query, { id });
-}
+import EventSkeleton from "@/components/EventSkeleton";
 
 const formatDateInSpanish = (dateString: string) => {
   return format(new Date(dateString), "d 'de' MMMM yyyy, HH:mm", { locale: es });
 };
 
-type PageProps = {
-  params: Promise<{ id: string }>;
-};
+const EventPage = () => {
+  const { id } = useParams(); 
+  const [event, setEvent] = useState<EventType | null>(null);
+  const [loading, setLoading] = useState(true);
 
-export default async function EventPage({ params }: PageProps ) {
-  const resolvedParams = await params; // Unwrap the Promise
-  const event = await fetchEvent(resolvedParams.id); // Now use the ID
+  useEffect(() => {
+    if (!id) return; 
 
-  if (!event) return notFound();
+    const fetchEvent = async () => {
+      try {
+        const query = `*[_type == "event" && _id == $id][0]{
+          _id,
+          name,
+          description,
+          dates,
+          promoImage {
+            asset->{url}
+          },
+          categories,
+          priceRange {
+            minPrice,
+            maxPrice
+          },
+          location->{
+            _id,
+            name,
+            address
+          },
+          trending
+        }`;
 
+        const result = await sanityClient.fetch(query, { id });
+
+        if (!result) {
+          setEvent(null);
+        } else {
+          setEvent(result);
+        }
+      } catch (error) {
+        console.error("Error fetching event:", error);
+        setEvent(null);
+      } finally {
+        setLoading(false); // Stops loading state after fetch
+      }
+    };
+
+    fetchEvent();
+  }, [id]); //
+
+  if (loading) return <EventSkeleton />; // Show skeleton while loading
+  if (!event) return notFound(); 
   const eventDates = event.dates || [];
 
   //TODO: The will-change-auto may be causing a hydration error
@@ -190,3 +168,4 @@ export default async function EventPage({ params }: PageProps ) {
   );
 }
 
+export default EventPage;
