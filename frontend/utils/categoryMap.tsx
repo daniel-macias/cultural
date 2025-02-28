@@ -18,4 +18,6 @@ export const categoryMap: Record<string, { label: string; color: string }> = {
     cine: { label: "Cine y Televisión", color: "bg-blue-700 text-white" },
     networking: { label: "Networking", color: "bg-gray-600 text-white" },
     videojuegos: { label: "Videojuegos", color: "bg-indigo-700 text-white" },
+    genero: { label: "Género y Diversidad", color: "bg-fuchsia-500 text-white" },
+    taller: { label: "Taller", color: "bg-amber-950 text-white" },
   };
