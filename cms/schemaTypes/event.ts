@@ -62,6 +62,8 @@ export default defineType({
             { title: 'Cine y Televición', value: 'cine' },
             { title: 'Networking', value: 'networking' },
             { title: 'Videojuegos', value: 'videojuegos' },
+            { title: 'Género y Diversidad', value: 'genero' },
+            { title: 'Taller', value: 'taller' },
           ],
         },
       }),
