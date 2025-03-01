@@ -24,7 +24,7 @@ async function fetchEvents(category?: string, searchQuery?: string, showPast? : 
   if (!showPast) {
     query += ` && dates[0].start >= "${today}"`;
   } else {
-    query += ` && dates[0].start < "${today}"`;
+    query += ` && dates[0].start != ""`;
   }
 
   query += `]{
@@ -92,18 +92,18 @@ export default function EventsPage() {
         </h1>
 
         {/* 🔎 Search Input and Show Past Events Toggle */}
-        <div className="flex justify-center items-center gap-6 mb-6">
+        <div className="flex flex-col justify-center md:flex-row md:items-center gap-4 pb-4">
           {/* Search Input */}
           <input
             type="text"
             placeholder="Buscar eventos..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full md:w-1/2 px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full md:w-auto px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           {/* Show Past Events Toggle */}
-          <label className="flex items-center space-x-2 cursor-pointer">
+          <label className="flex items-center space-x-2 cursor-pointer md:ml-4">
             <input
               type="checkbox"
               checked={showPast}
