@@ -92,7 +92,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, setActive }) => {
       <p className="text-sm font-medium text-green-600 mt-2">
         {event.priceRange
           ? `$${event.priceRange.minPrice} - $${event.priceRange.maxPrice}`
-          : "Free"}
+          : "Gratis"}
       </p>
 
       {/* Categories */}
