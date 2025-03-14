@@ -27,7 +27,18 @@ async function fetchEvents() {
     },
     trending
   }`;
-  return await sanityClient.fetch(query);
+  let events = await sanityClient.fetch(query);
+
+  // Ensure events have valid dates and sort by earliest date
+  events = events
+    .map((event: { dates: { start: string | number | Date; }[]; }) => ({
+      ...event,
+      earliestDate: event.dates ? new Date(event.dates[0].start) : null
+    }))
+    .filter((event: { earliestDate: any; }) => event.earliestDate) 
+    .sort((a: { earliestDate: number; }, b: { earliestDate: number; }) => a.earliestDate - b.earliestDate); // Sort ascending
+
+  return events;
 }
 
 export default function ExpandableCardDemo() {

@@ -136,10 +136,10 @@ const EventPage = () => {
         <h3 className="text-lg font-semibold">Precio:</h3>
         {event.priceRange ? (
           <p>
-            ${event.priceRange.minPrice} - ${event.priceRange.maxPrice}
+            L. {event.priceRange.minPrice} - L. {event.priceRange.maxPrice}
           </p>
         ) : (
-          <p>Free</p>
+          <p>Gratis</p>
         )}
       </div>
 
